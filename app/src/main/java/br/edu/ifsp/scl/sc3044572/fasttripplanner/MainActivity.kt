@@ -59,8 +59,8 @@ fun FastTripPlannerLayout(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+            .padding(20.dp),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -81,7 +81,7 @@ fun FastTripPlannerLayout(modifier: Modifier = Modifier) {
             )
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         TextField(
             value = days,
@@ -99,7 +99,7 @@ fun FastTripPlannerLayout(modifier: Modifier = Modifier) {
             )
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         TextField(
             value = dailyBudget,
@@ -125,7 +125,7 @@ fun FastTripPlannerLayout(modifier: Modifier = Modifier) {
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             modifier = Modifier.fillMaxWidth(),
