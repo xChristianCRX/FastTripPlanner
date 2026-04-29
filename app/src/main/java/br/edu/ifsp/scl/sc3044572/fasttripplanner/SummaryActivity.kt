@@ -1,9 +1,14 @@
 package br.edu.ifsp.scl.sc3044572.fasttripplanner
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -111,6 +116,39 @@ fun SummaryLayout(
         )
 
         HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Custo Total Estimado", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = currencyFormat.format(totalCost),
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                val intent = Intent(context, MainActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                }
+                context.startActivity(intent)
+                (context as Activity).finish()
+            }
+        ) {
+            Text("Reiniciar Planejamento")
+        }
     }
 }
 
