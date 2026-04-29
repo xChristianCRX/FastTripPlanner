@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -11,7 +14,11 @@ import br.edu.ifsp.scl.sc3044572.fasttripplanner.ui.theme.FastTripPlannerTheme
 import java.text.NumberFormat
 import java.util.Locale
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 class SummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +78,40 @@ fun SummaryLayout(
 
     val totalCost = (baseCost * hotelMultiplier) + transportCost + foodCost + toursCost
     val currencyFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = "Resumo da Viagem",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+
+        HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+
+        Text("Destino: $dest", style = MaterialTheme.typography.bodyLarge)
+        Text("Duração: $days dias", style = MaterialTheme.typography.bodyLarge)
+        Text("Orçamento Diário: ${currencyFormat.format(budget)}", style = MaterialTheme.typography.bodyLarge)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text("Hospedagem: $hotelType", style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = "Serviços Inclusos: " + listOfNotNull(
+                if (hasTransport) "Transporte" else null,
+                if (hasFood) "Alimentação" else null,
+                if (hasTours) "Passeios" else null
+            ).joinToString(", ").ifEmpty { "Nenhum" },
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+    }
 }
 
 @Composable
