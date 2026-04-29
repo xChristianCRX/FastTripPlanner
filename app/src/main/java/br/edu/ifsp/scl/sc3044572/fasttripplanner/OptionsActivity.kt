@@ -33,6 +33,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.edu.ifsp.scl.sc3044572.fasttripplanner.ui.theme.FastTripPlannerTheme
+import kotlin.jvm.java
 
 class OptionsActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
