@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +21,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,15 +54,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FastTripPlannerLayout(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    var destination by remember { mutableStateOf("") }
-    var days by remember { mutableStateOf("") }
-    var dailyBudget by remember { mutableStateOf("") }
-    var showError by remember { mutableStateOf(false) }
+    var destination by rememberSaveable { mutableStateOf("") }
+    var days by rememberSaveable { mutableStateOf("") }
+    var dailyBudget by rememberSaveable { mutableStateOf("") }
+    var showError by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(20.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
