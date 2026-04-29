@@ -14,6 +14,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -139,6 +140,31 @@ fun SummaryLayout(
         }
 
         Spacer(modifier = Modifier.weight(1f))
+
+        OutlinedButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                val shareText = """
+                    ✈️ Meu Planejamento de Viagem: $dest
+                    📅 Duração: $days dias
+                    🏨 Hospedagem: $hotelType
+                    💰 Custo Estimado: ${currencyFormat.format(totalCost)}
+                """.trimIndent()
+
+                val sendIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, shareText)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, "Compartilhar resumo da viagem")
+                context.startActivity(shareIntent)
+            }
+        ) {
+            Text("Compartilhar Resumo")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(
             modifier = Modifier.fillMaxWidth(),
