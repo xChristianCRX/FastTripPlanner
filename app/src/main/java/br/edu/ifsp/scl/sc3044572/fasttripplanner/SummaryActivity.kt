@@ -141,8 +141,7 @@ fun SummaryLayout(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 val intent = Intent(context, MainActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                }
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)                }
                 context.startActivity(intent)
                 (context as Activity).finish()
             }
