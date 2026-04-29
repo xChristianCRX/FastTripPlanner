@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".OptionsActivity"></activity>
+        <activity android:name=".SummaryActivity"></activity>
     </application>
 
 </manifest>
