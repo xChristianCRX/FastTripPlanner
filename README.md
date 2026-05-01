@@ -50,3 +50,6 @@ O cálculo final segue a estrutura:
 2. Abra o projeto no **Android Studio**.
 3. Sincronize o Gradle e compile o projeto.
 4. Execute em um emulador ou dispositivo físico.
+
+### 📽️ [Vídeo utilizando a aplicação](https://youtu.be/kRczy0X0SI4)
+
