@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import br.edu.ifsp.scl.sc3044572.fasttripplanner.ui.theme.FastTripPlannerTheme
 import kotlin.jvm.java
 
-class OptionsActivity: ComponentActivity() {
+class OptionsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,12 +62,13 @@ class OptionsActivity: ComponentActivity() {
 }
 
 @Composable
-fun OptionsLayout(modifier: Modifier = Modifier, dest: String, days: Int, budget: Double){
+fun OptionsLayout(modifier: Modifier = Modifier, dest: String, days: Int, budget: Double) {
     val context = LocalContext.current
 
     val hotelOptions = listOf("Econômica", "Conforto", "Luxo")
     var selectedHotel by rememberSaveable { mutableStateOf(hotelOptions[0]) }
 
+    var economicMode by rememberSaveable { mutableStateOf(true) }
     var hasTransport by rememberSaveable { mutableStateOf(false) }
     var hasFood by rememberSaveable { mutableStateOf(false) }
     var hasTours by rememberSaveable { mutableStateOf(false) }
@@ -82,8 +83,24 @@ fun OptionsLayout(modifier: Modifier = Modifier, dest: String, days: Int, budget
     ) {
         Text(
             text = "Opções para: $dest",
-            style = MaterialTheme.typography.titleLarge)
+            style = MaterialTheme.typography.titleLarge
+        )
         Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Modo econômico:", style = MaterialTheme.typography.titleMedium)
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = economicMode,
+                onCheckedChange = {
+                    economicMode = it
+                    if (it) {
+                        selectedHotel = hotelOptions[0]
+                        hasTours = false
+                    }
+                })
+            Text("Modo econômico")
+        }
 
         Text("Tipo de Hospedagem:", style = MaterialTheme.typography.titleMedium)
         hotelOptions.forEach { text ->
@@ -92,13 +109,20 @@ fun OptionsLayout(modifier: Modifier = Modifier, dest: String, days: Int, budget
                     .fillMaxWidth()
                     .selectable(
                         selected = (text == selectedHotel),
-                        onClick = { selectedHotel = text },
+                        onClick = {
+                            if (!economicMode)
+                                selectedHotel = text
+                        },
                         role = Role.RadioButton
                     )
                     .padding(vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                RadioButton(selected = (text == selectedHotel), onClick = null)
+                RadioButton(
+                    selected = (text == selectedHotel),
+                    onClick = null,
+                    enabled = !economicMode
+                )
                 Text(text = text, modifier = Modifier.padding(start = 8.dp))
             }
         }
@@ -116,7 +140,13 @@ fun OptionsLayout(modifier: Modifier = Modifier, dest: String, days: Int, budget
             Text("Alimentação (R$ 50/dia)")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = hasTours, onCheckedChange = { hasTours = it })
+            Checkbox(
+                checked = hasTours,
+                enabled = !economicMode,
+                onCheckedChange = {
+                    if (!economicMode)
+                        hasTours = it
+                })
             Text("Passeios (R$ 120/dia)")
         }
 
@@ -137,6 +167,7 @@ fun OptionsLayout(modifier: Modifier = Modifier, dest: String, days: Int, budget
                 modifier = Modifier.weight(1f),
                 onClick = {
                     val intent = Intent(context, SummaryActivity::class.java).apply {
+                        putExtra("EXTRA_ECONOMIC", economicMode)
                         putExtra("EXTRA_DESTINATION", dest)
                         putExtra("EXTRA_DAYS", days)
                         putExtra("EXTRA_BUDGET", budget)
@@ -157,7 +188,7 @@ fun OptionsLayout(modifier: Modifier = Modifier, dest: String, days: Int, budget
 
 @Composable
 @Preview(showBackground = true)
-fun OptionsLayoutPreview(){
+fun OptionsLayoutPreview() {
     OptionsLayout(
         modifier = Modifier.fillMaxSize(),
         dest = "Suiça",

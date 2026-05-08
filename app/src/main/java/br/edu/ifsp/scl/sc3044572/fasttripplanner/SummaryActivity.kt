@@ -32,6 +32,7 @@ class SummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val economicMode = intent.getBooleanExtra("EXTRA_ECONOMIC", false)
         val destination = intent.getStringExtra("EXTRA_DESTINATION") ?: "Desconhecido"
         val days = intent.getIntExtra("EXTRA_DAYS", 0)
         val budget = intent.getDoubleExtra("EXTRA_BUDGET", 0.0)
@@ -52,7 +53,8 @@ class SummaryActivity : ComponentActivity() {
                         hotelType = hotelType,
                         hasTransport = hasTransport,
                         hasFood = hasFood,
-                        hasTours = hasTours
+                        hasTours = hasTours,
+                        economicMode = economicMode
                     )
                 }
             }
@@ -69,7 +71,8 @@ fun SummaryLayout(
     hotelType: String,
     hasTransport: Boolean,
     hasFood: Boolean,
-    hasTours: Boolean
+    hasTours: Boolean,
+    economicMode: Boolean
 ) {
     val context = LocalContext.current
 
@@ -84,7 +87,8 @@ fun SummaryLayout(
     val foodCost = if (hasFood) 50.0 * days else 0.0
     val toursCost = if (hasTours) 120.0 * days else 0.0
 
-    val totalCost = (baseCost * hotelMultiplier) + transportCost + foodCost + toursCost
+    var totalCost = (baseCost * hotelMultiplier) + transportCost + foodCost + toursCost
+    if (economicMode) totalCost *= 0.85
     val currencyFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
 
     Column(
@@ -191,6 +195,7 @@ fun SummaryLayoutPreview(){
         hotelType = "Conforto",
         hasTransport = true,
         hasFood = true,
-        hasTours = true
+        hasTours = true,
+        economicMode = true
     )
 }
